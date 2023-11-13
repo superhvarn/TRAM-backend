@@ -3,8 +3,9 @@ from .models import db, URL, User
 from .utils import generate_short_link, check_rate_limit
 
 bp = Blueprint('api', __name__)
-
+    
 @bp.route('/api/shorten', methods=['POST'])
+                
 def shorten_url():
     data = request.json
     user_id = data.get('user_id')
@@ -67,12 +68,16 @@ def index():
 @bp.route('/api/create_user', methods=['POST'])
 def create_user():
     data = request.json
-    user_id = data.get('id')
+    user_id = data.get('user_id')
     tier = data.get('tier')
 
     # Checking if the parameters are given
     if user_id is None or tier is None:
         return jsonify({"error": "Invalid user data. 'id' and 'tier' are required."}), 400
+    
+    # Checking for invalid tier
+    if (tier != 1 and tier != 2):
+        return jsonify({"error": "Invalid user data. invalid 'tier'."}), 400
 
     # Checking if there is already a user with this id
     existing_user = User.query.filter_by(id=user_id).first()
