@@ -1,0 +1,5 @@
+---
+dburi: "sqlite:///url_shortener.db"
+RATE_LIMITS:
+  Tier 1: 1000
+  Tier 2: 100
